@@ -8,10 +8,7 @@ export default class ClusterList extends Component {
   render() {
     return (
       <div className={styles.ClusterList}>
-        <h2>
-          clusters
-          <a className={styles.RefreshLink} href="javascript:void(0)" onClick={this.props.onRefresh}>refresh</a>
-        </h2>
+        <h2>clusters<a className={styles.RefreshLink} href="javascript:void(0)" onClick={this.props.onRefresh}>refresh</a></h2>
         <ul>
           {this.renderItem(null)}
           {this.props.clusters.map(::this.renderItem)}

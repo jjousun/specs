@@ -1,12 +1,12 @@
-
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import classname from 'classname';
 import moment from 'moment';
-import { Link } from 'react-router';
+import {Link} from 'react-router';
 import styles from './index.css';
 import ContainerInstanceStats from '../container-instance-stats';
 
 export default class ContainerInstanceList extends Component {
+
   render() {
     const containers = this.matchingContainers();
 
@@ -32,7 +32,7 @@ export default class ContainerInstanceList extends Component {
       <li key={n + container.containerInstanceArn} className={styles.ContainerListItem}>
         <Link to={`/${clusterName}/container-instance/${instanceArnId}`}>
           <h3>{container.ec2InstanceId}</h3>
-          <ContainerInstanceStats containerInstance={container} />
+          <ContainerInstanceStats containerInstance={container}/>
         </Link>
       </li>
     );
@@ -42,7 +42,7 @@ export default class ContainerInstanceList extends Component {
     const containers = this.props.containerInstances;
     const activeClusterArn = this.props.activeClusterArn;
 
-    const filtered = containers.filter(function(container) {
+    const filtered = containers.filter(function (container) {
       if (!activeClusterArn) return false; // don't render if no cluster selected
       return container.clusterArn === activeClusterArn;
     });
@@ -52,7 +52,7 @@ export default class ContainerInstanceList extends Component {
       const leftVal = left.attributes.find(a => a.name === 'ecs.availability-zone').value;
       const rightVal = right.attributes.find(a => a.name === 'ecs.availability-zone').value;
 
-      if (leftVal == rightVal) { 
+      if (leftVal == rightVal) {
         return 0;
       }
 

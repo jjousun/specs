@@ -1,4 +1,3 @@
-
 'use strict'
 
 let logger = require('koa-logger');
@@ -9,6 +8,7 @@ let AWS = require('aws-sdk');
 let cors = require('kcors');
 let path = require('path');
 let ECS = require('./ecs');
+let EC2 = require('./ec2');
 let koa = require('koa');
 let serve = require('koa-static');
 
@@ -18,7 +18,8 @@ let serve = require('koa-static');
 
 let app = koa();
 let ecs = new ECS(AWS);
-let cache = new Cache(ecs);
+let ec2 = new EC2(AWS, ecs);
+let cache = new Cache(ecs, ec2);
 
 /**
  * Set a cache error handler
@@ -42,7 +43,7 @@ app.use(logger());
  * Setup an error handler.
  */
 
-app.use(function *(next){
+app.use(function* (next) {
   try {
     yield next;
   } catch (err) {
@@ -60,9 +61,10 @@ app.use(cors());
  * Create our state.
  */
 
-app.use(function *(next){
+app.use(function* (next) {
   this.cache = cache;
   this.ecs = ecs;
+  this.ec2 = ec2;
   yield next;
 });
 
@@ -91,7 +93,7 @@ app.use(route.get('/*', index));
  * Transfer the index page
  */
 
-function *index(){
+function* index() {
   yield send(this, 'build/index.html');
 }
 
@@ -99,7 +101,7 @@ function *index(){
  * Transfer js bundle
  */
 
-function *bundle(){
+function* bundle() {
   yield send(this, 'build/bundle.js');
 }
 
@@ -107,7 +109,7 @@ function *bundle(){
  * Transfer the bundle sourcemap.
  */
 
-function *sourcemap(){
+function* sourcemap() {
   yield send(this, 'build/bundle.js.map');
 }
 
@@ -115,7 +117,7 @@ function *sourcemap(){
  * Transfer stylesheet
  */
 
-function *stylesheet(){
+function* stylesheet() {
   yield send(this, 'build/bundle.css');
 }
 
@@ -123,7 +125,7 @@ function *stylesheet(){
  * Transfer stylesheet sourcemap
  */
 
-function *stylesheetMap(){
+function* stylesheetMap() {
   yield send(this, 'build/bundle.css.map');
 }
 
@@ -131,7 +133,7 @@ function *stylesheetMap(){
  * Return AWS details
  */
 
-function *awsConfig() {
+function* awsConfig() {
   const config = this.ecs.ecs.config;
   this.body = {
     region: config.region,
@@ -142,20 +144,19 @@ function *awsConfig() {
  * Return a json array of all the clusters
  */
 
-function *list(){
+function* list() {
   let cache = this.cache;
   let clusters = cache.clusters();
   this.body = clusters;
 }
 
 /**
- * Returns a json array of services and container 
- * instances for a given cluster in the path parameter.
- *
- * @param {String} cluster
+ * Returns a json array of services and container
+ * instances fora given cluster inthe path parameter.
+ ** @param {String} cluster
  */
 
-function *servicesAndContainerInstances(cluster){
+function* servicesAndContainerInstances(cluster) {
   let cache = this.cache;
   this.body = {
     services: cache.services(cluster),
@@ -170,19 +171,19 @@ function *servicesAndContainerInstances(cluster){
  * @param {String} cluster
  */
 
-function *services(cluster){
+function* services(cluster) {
   let cache = this.cache;
   this.body = cache.services(cluster);
 }
 
 /**
- * Returns a json array of container instances for 
+ * Returns a json array of container instances for
  * a given cluster in the path parameter.
  *
  * @param {String} cluster
  */
 
-function *containerInstances(cluster){
+function* containerInstances(cluster) {
   let cache = this.cache;
   this.body = cache.containerInstances(cluster);
 }
@@ -194,7 +195,7 @@ function *containerInstances(cluster){
  * @param {String} taskArn
  */
 
-function *task(taskArn){
+function* task(taskArn) {
   let ecs = this.state.ecs;
   let task = yield ecs.task(taskArn);
   this.body = task;

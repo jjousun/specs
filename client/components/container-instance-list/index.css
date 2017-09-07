@@ -1,5 +1,4 @@
 
-
 .ContainerListWrapper {
   float: right;
   margin: -5px;
@@ -25,7 +24,7 @@
   margin: 5px;
 }
 
-.ContainerListItem > a  {
+.ContainerListItem > a {
   height: 100%;
   width: 100%;
   display: block;
@@ -38,14 +37,15 @@
   border: 1px solid #e3e4e6;
   background: #fff;
   border-radius: 4px;
-  font-family: Freight Sans,Verdana,Geneva,sans-serif;
-  box-shadow: 0 1px 0 rgba(0,0,0,.05);
+  font-family: Freight Sans, Verdana, Geneva, sans-serif;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, .05);
   box-sizing: border-box;
   transform: translateZ(0);
 }
 
 .ContainerListItem a:focus,
 .ContainerListItem a:hover {
+
   border-color: #3cc76a;
 }
 

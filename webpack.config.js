@@ -39,7 +39,7 @@ const config = module.exports = {
         exclude: /node_modules/,
         loaders: [
           'react-hot',
-          'babel?cacheDirectory=./node_modules/.webpack_cache/'
+            'babel?cacheDirectory=./node_modules/.webpack_cache/'
         ],
       },
       {

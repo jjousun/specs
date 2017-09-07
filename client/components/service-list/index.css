@@ -8,14 +8,16 @@
 }
 
 .ServiceListItem {
-  display: inline-block;
-  width: 216px;
   height: 193px;
   box-sizing: border-box;
   list-style: none;
   margin: 5px;
 }
 
+.ServiceListItemGrid {
+  display: inline-block;
+  width: 216px;
+}
 
 .ServiceListItem a {
   height: 100%;

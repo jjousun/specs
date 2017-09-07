@@ -1,8 +1,7 @@
-
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import classname from 'classname';
 import moment from 'moment';
-import { Link } from 'react-router';
+import {Link} from 'react-router';
 import ServiceStats from '../service-stats';
 import styles from './index.css';
 
@@ -25,8 +24,8 @@ export default class TasksList extends Component {
   }
 
   renderTask(task, n) {
-    const { region } = this.context.awsConfig;
-    const { clusterName } = this.props.cluster;
+    const {region} = this.context.awsConfig;
+    const {clusterName} = this.props.cluster;
     const renderContext = this.props.context;
 
     const taskArnId = task.taskArn.split(':task/')[1];
@@ -36,6 +35,8 @@ export default class TasksList extends Component {
     const taskUrl = `https://${region}.console.aws.amazon.com/ecs/home?region=${region}#/clusters/${clusterName}/tasks/${taskArnId}/details`;
     const containerInstanceUrl = `/${clusterName}/container-instance/${containerInstanceId}`;
     const serviceUrl = `/${clusterName}/${serviceName}`;
+
+    const containerIp = task.containerInstanceIp;
 
     return (
       <li key={task.taskArn}>
@@ -48,21 +49,27 @@ export default class TasksList extends Component {
         </h3>
         <table>
           <tbody>
-            {serviceName && 
-              <tr>
-                <th>Service</th>
-                <td><Link to={serviceUrl}>{serviceName}</Link></td>
-              </tr>
-            }
-            <tr>
-              <th>Container Instance</th>
-              <td><Link to={containerInstanceUrl}>{containerInstanceId}</Link></td>
+          {serviceName &&
+          <tr>
+            <th>Service</th>
+            <td><Link to={serviceUrl}>{serviceName}</Link></td>
+          </tr>
+          }
+          <tr>
+            <th>Container Instance</th>
+            <td><Link to={containerInstanceUrl}>{containerInstanceId}</Link></td>
+          </tr>
+          <tr>
+            <th>Task ID</th>
+            <td><a href={taskUrl} target="_blank">{taskArnId}</a></td>
+          </tr>
+          {task.containers[0].networkBindings.map(({protocol, hostPort, containerPort}, index) => (
+            <tr key={`binding_${index}`}>
+              <th>Port Mappings</th>
+              <td><a href={`http://${containerIp}:${hostPort}`} target="_blank">{protocol} : {hostPort} (host)
+                - {containerPort} (container)</a></td>
             </tr>
-            <tr>
-              <th>Task ID</th>
-              <td><a href={taskUrl} target="_blank">{taskArnId}</a></td>
-            </tr>
-            
+          ))}
           </tbody>
         </table>
       </li>

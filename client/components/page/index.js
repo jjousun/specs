@@ -1,5 +1,4 @@
-
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import styles from './index.css';
 
 export default class Page extends Component {
@@ -9,6 +8,7 @@ export default class Page extends Component {
         <header>
           <h1>specs</h1>
           <p>peer into your ecs clusters</p>
+          <button type="button" className={styles.viewer} onClick={this.props.toggleGrid}>grid / list view</button>
         </header>
         <div className={styles.PageContent}>
           {this.props.children}

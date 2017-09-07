@@ -5,6 +5,7 @@ import moment from 'moment';
 import { Link } from 'react-router';
 import ServiceStats from '../service-stats';
 import styles from './index.css';
+import classNames from 'classnames';
 
 export default class ServiceList extends Component {
   render() {
@@ -22,8 +23,13 @@ export default class ServiceList extends Component {
     const updated = moment(service.deployments[0].updatedAt).fromNow();
     // HACK: pull the cluster name from its arn
     const clusterName = service.clusterArn.split('cluster/')[1];
+    const classes =  {
+          [styles.ServiceListItem]: true,
+          [styles.ServiceListItemGrid]: this.props.isGrid
+    };
+    const liClasses = classNames(classes);
     return (
-      <li key={n + service.serviceArn} className={styles.ServiceListItem}>
+      <li key={n + service.serviceArn} className={liClasses}>
         <Link to={`/${clusterName}/${service.serviceName}`}>
           <h3>{service.serviceName}</h3>
           <ServiceStats service={service} />

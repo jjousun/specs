@@ -1,5 +1,7 @@
 
-.Page {}
+.Page {
+}
+
 .Page h1 {
   margin: 0;
   padding: 0;
@@ -7,4 +9,9 @@
 
 .PageContent {
   clear: both;
+}
+
+.viewer {
+  margin-bottom: 15px;
+  font-size: 16px;
 }
