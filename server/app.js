@@ -75,6 +75,7 @@ app.use(route.get('/api/clusters/:cluster', servicesAndContainerInstances));
 app.use(route.get('/api/clusters/:cluster/services', services));
 app.use(route.get('/api/clusters/:cluster/containerInstances', containerInstances));
 app.use(route.get('/api/clusters/:cluster/task/:task', task));
+app.use(route.get('/api/aws-config', awsConfig));
 
 /**
  * Static routes.
@@ -124,6 +125,17 @@ function *stylesheet(){
 
 function *stylesheetMap(){
   yield send(this, 'build/bundle.css.map');
+}
+
+/**
+ * Return AWS details
+ */
+
+function *awsConfig() {
+  const config = this.ecs.ecs.config;
+  this.body = {
+    region: config.region,
+  };
 }
 
 /**

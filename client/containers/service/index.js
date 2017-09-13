@@ -32,7 +32,7 @@ export default class Service extends Component {
       <div className={styles.Service}>
         <Sheet onClose={::this.closeSheet}>
           <h1 tabIndex="-1" ref="heading">{this.props.service.serviceName}</h1>
-          <ServiceStats service={this.props.service} left={true} />
+          <ServiceStats service={this.props.service} left={true} fullStats={true} />
           <Tabs handleSelect={::this.selectTab} selectedTab={this.state.tab} className={styles.ServiceTabs} activeLinkStyle={activeLinkStyle}>
             <nav className={styles['ServiceTabs-navigation']}>
               <ul>

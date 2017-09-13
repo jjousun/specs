@@ -5,16 +5,24 @@ import classname from 'classname';
 import styles from './index.css';
 
 export default class ServiceTaskDef extends Component {
+  static contextTypes = {
+    awsConfig: React.PropTypes.object.isRequired
+  };
+
   render() {
     const { family, revision, definition } = this.props;
     const command = definition.command ? definition.command.join(' ') : null;
+
+    const { region } = this.context.awsConfig;
+    const url = `https://${region}.console.aws.amazon.com/ecs/home?region=${region}#/taskDefinitions/${family}/${revision}`;
+
     return (
       <div className={styles.ServiceTaskDef}>
         <table>
           <tbody>
             <tr>
               <th>task def</th>
-              <td>{family}:{revision}</td>
+              <td><a href={url}>{family}:{revision}</a></td>
             </tr>
             <tr>
               <th>CPU</th>

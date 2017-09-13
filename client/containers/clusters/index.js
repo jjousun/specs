@@ -11,6 +11,10 @@ import Service from '../service';
 import ContainerInstanceList from '../../components/container-instance-list';
 
 export default class ClustersContainer extends Component {
+  static childContextTypes = {
+    awsConfig: React.PropTypes.object,
+  };
+
   constructor(props, context) {
     super(props, context)
     this.state = {
@@ -19,7 +23,17 @@ export default class ClustersContainer extends Component {
       services: [],
       containerInstances: [],
       activeClusterArn: null,
-      activeServiceArn: null
+      activeServiceArn: null,
+      awsConfig: {},
+    };
+  }
+
+  /** 
+   * Pass through 
+  */
+  getChildContext() {
+    return {
+      awsConfig: this.state.awsConfig,
     };
   }
 
@@ -173,6 +187,17 @@ export default class ClustersContainer extends Component {
         this.fetchServices(clusters[i]);
       }
     }.bind(this));
+
+    request
+    .get('/api/aws-config')
+    .end((err, res) => {
+      if (err) {
+        return this.setState({ error: err.message });
+      }
+
+      const awsConfig = res.body;
+      this.setState({ awsConfig });
+    });
   }
 
   /**
