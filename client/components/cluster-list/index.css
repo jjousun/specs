@@ -56,3 +56,9 @@
   color: #3cc76a;
   border-color: rgba(183,189,196,.5);
 }
+
+.RefreshLink {
+  font-size: 12px;
+  margin-left: 1em;
+  text-transform: lowercase;
+}

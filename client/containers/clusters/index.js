@@ -51,7 +51,9 @@ export default class ClustersContainer extends Component {
           activeClusterArn={activeClusterArn}
           searchTerm={this.state.searchTerm}
           setSearchTerm={::this.setSearchTerm}
-          selectCluster={::this.setActiveCluster} />
+          selectCluster={::this.setActiveCluster} 
+          onRefresh={::this.fetchData}
+        />
 
         <Loader loaded={isLoading} color="#3cc76a">
           {this.renderError()}
@@ -169,10 +171,25 @@ export default class ClustersContainer extends Component {
   }
 
   /**
+   * When component mounts, fetch data
+  */
+
+  componentDidMount() {
+    this.fetchData();
+  }
+
+  /**
    * Fetch data.
    */
 
-  componentDidMount() {
+  fetchData() {
+    // Reset data sets
+    this.setState({
+      clusters: [],
+      services: [],
+      containerInstances: [],
+    });
+
     request
     .get('/api/clusters')
     .end(function(err, res) {

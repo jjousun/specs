@@ -14,7 +14,8 @@ export default class Sidebar extends Component {
         <ClusterList
           clusters={this.props.clusters}
           activeClusterArn={this.props.activeClusterArn}
-          onClick={this.props.selectCluster} />
+          onClick={this.props.selectCluster} 
+          onRefresh={this.props.onRefresh} />
       </div>
     );
   }
