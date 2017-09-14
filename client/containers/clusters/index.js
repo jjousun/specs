@@ -231,8 +231,21 @@ export default class ClustersContainer extends Component {
       }
 
       const { services, containerInstances } = this.state;
+
+      let sortedServices = services.concat(res.body.services);
+      // sort services by serviceName
+      sortedServices.sort((a, b) => {
+        const nameA = a.serviceName.toUpperCase();
+        const nameB = b.serviceName.toUpperCase();
+
+        if (nameA == nameB) {
+          return 0;
+        }
+        return nameA < nameB ? -1 : 1;
+      });
+
       this.setState({
-        services: services.concat(res.body.services),
+        services: sortedServices,
         containerInstances: containerInstances.concat(res.body.containerInstances),
       });
     }.bind(this));
