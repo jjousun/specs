@@ -22,7 +22,7 @@ export default class ServiceTaskDef extends Component {
           <tbody>
             <tr>
               <th>task def</th>
-              <td><a href={url}>{family}:{revision}</a></td>
+              <td><a href={url} target="_blank">{family}:{revision}</a></td>
             </tr>
             <tr>
               <th>CPU</th>

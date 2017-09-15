@@ -31,7 +31,7 @@ export default class ServiceStats extends Component {
         </tr>
         <tr>
           <th>Link</th>
-          <td><a href={url}>{url}</a></td>
+          <td><a href={url} target="_blank">{url}</a></td>
         </tr>
       </tbody>
     )
