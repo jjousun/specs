@@ -204,7 +204,7 @@ ECS.prototype.describeServices = function ([cluster, services]){
  * @param {String} task the task arn
  */
 
-ECS.prototype.task = function (task){
+ECS.prototype.taskDef = function (task){
   return new Promise((resolve, reject) => {
     let req = { taskDefinition: task };
     this.ecs.describeTaskDefinition(req, (err, res) => {

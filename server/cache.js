@@ -18,13 +18,13 @@ module.exports = Cache;
 
 function Cache(ecs){
   Emitter.call(this);
-  this.tasks = LRU({
+  this.taskDefs = LRU({
     max: 1000000,
     maxAge: ms('1d'),
     length: (val, key) => 1
   });
   this.ecs = ecs;
-  this.cache([], []); // initial state
+  this.cache([], [], [], []); // initial state
   this.start();
 }
 
@@ -82,19 +82,19 @@ Cache.prototype.poll = function *(){
   debug('received %d containers', containerInstances.length);
 
   // from all the tasks, get the versions running, then cache the result.
-  let taskCache = this.tasks;
-  let taskCalls = services.map(service => {
-    let task = taskCache.get(service.taskDefinition);
-    if (task) {
-      return Promise.resolve(task);
+  let taskDefCache = this.taskDefs;
+  let taskDefCalls = services.map(service => {
+    let taskDef = taskDefCache.get(service.taskDefinition);
+    if (taskDef) {
+      return Promise.resolve(taskDef);
     }
-    return ecs.task(service.taskDefinition).then(task => {
-      taskCache.set(service.taskDefinition, task);
-      return task;
+    return ecs.taskDef(service.taskDefinition).then(taskDef => {
+      taskDefCache.set(service.taskDefinition, taskDef);
+      return taskDef;
     });
   });
-  let tasks = yield Promise.all(taskCalls);
-  services.forEach((service, i) => service.task = tasks[i].taskDefinition);
+  let taskDefs = yield Promise.all(taskDefCalls);
+  services.forEach((service, i) => service.taskDef = taskDefs[i].taskDefinition);
   debug('received %d tasks', services.length);
   this.cache(clusters, services, containerInstances);
 };
@@ -143,10 +143,11 @@ Cache.prototype.containerInstances = function(cluster){
  * @param {Array} services
  */
 
-Cache.prototype.cache = function(clusters, services, containerInstances){
+Cache.prototype.cache = function(clusters, services, containerInstances, tasks){
   this._clusters = clusters;
   this._services = services;
   this._containerInstances = containerInstances;
+  this._tasks = tasks;
 };
 
 /**

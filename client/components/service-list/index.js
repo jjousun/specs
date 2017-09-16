@@ -18,7 +18,7 @@ export default class ServiceList extends Component {
 
   renderServiceItem(service, n) {
     const { runningCount, desiredCount } = service;
-    const { name, image } = service.task.containerDefinitions[0];
+    const { name, image } = service.taskDef.containerDefinitions[0];
     const updated = moment(service.deployments[0].updatedAt).fromNow();
     // HACK: pull the cluster name from its arn
     const clusterName = service.clusterArn.split('cluster/')[1];

@@ -40,7 +40,7 @@ export default class ServiceStats extends Component {
   render() {
     const { service, fullStats } = this.props;
     const { runningCount, desiredCount } = service;
-    const { image } = service.task.containerDefinitions[0];
+    const { image } = service.taskDef.containerDefinitions[0];
     const updated = moment(service.deployments[0].updatedAt).fromNow();
     const classes = classname({
       [styles.ServiceStats]: true,

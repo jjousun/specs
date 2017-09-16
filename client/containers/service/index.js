@@ -55,9 +55,9 @@ export default class Service extends Component {
               </TabContent>
               <TabContent for="task_def">
                 <ServiceTaskDef
-                  family={this.props.service.task.family}
-                  revision={this.props.service.task.revision}
-                  definition={this.props.service.task.containerDefinitions[0]} />
+                  family={this.props.service.taskDef.family}
+                  revision={this.props.service.taskDef.revision}
+                  definition={this.props.service.taskDef.containerDefinitions[0]} />
               </TabContent>
             </div>
           </Tabs>
