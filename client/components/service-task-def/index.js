@@ -11,6 +11,7 @@ export default class ServiceTaskDef extends Component {
 
   render() {
     const { family, revision, definition } = this.props;
+    const { memory, memoryReservation } = definition;
     const command = definition.command ? definition.command.join(' ') : null;
 
     const { region } = this.context.awsConfig;
@@ -29,9 +30,21 @@ export default class ServiceTaskDef extends Component {
               <td>{definition.cpu}</td>
             </tr>
             <tr>
-              <th>memory</th>
-              <td>{definition.memory}</td>
+              <th>{memoryReservation ? 'hard memory' : 'memory'}</th>
+              <td>{memory}</td>
             </tr>
+            {memoryReservation &&
+              <tr>
+                <th>soft memory</th>
+                <td>{memoryReservation}</td>
+              </tr>
+            }
+            {definition.portMappings.map(({ protocol, hostPort, containerPort }, index) => (
+              <tr key={`mapping_${index}`}>
+                <th>port mappings</th>
+                <td>{protocol} : {hostPort} (host) - {containerPort} (container)</td>
+              </tr>              
+            ))}
             <tr>
               <th>command</th>
               <td>
