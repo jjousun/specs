@@ -28,3 +28,13 @@
   font-weight: italic;
   margin-bottom: 5px;
 }
+
+.ContainerInstanceStats--left-aligned th {
+  text-align: right;
+  font-weight: 500;
+  width: auto;
+}
+
+.ContainerInstanceStats--left-aligned td {
+  width: 80%;
+}

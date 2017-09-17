@@ -106,7 +106,6 @@ Cache.prototype.poll = function *(){
       });
   });
   let tasks = yield Promise.all(taskCalls);
-  console.log(tasks);
   this.cache(clusters, services, containerInstances, tasks);
 };
 

@@ -7,8 +7,9 @@ import Page from '../../components/page';
 import ErrorMessage from '../../components/error-message';
 import Sidebar from '../../components/sidebar';
 import ServiceList from '../../components/service-list';
-import Service from '../service';
 import ContainerInstanceList from '../../components/container-instance-list';
+import Service from '../service';
+import ContainerInstance from '../container-instance';
 
 export default class ClustersContainer extends Component {
   static childContextTypes = {
@@ -67,6 +68,7 @@ export default class ClustersContainer extends Component {
           />
         </Loader>
         {this.renderServiceSheet()}
+        {this.renderContainerInstanceSheet()}
       </Page>
     )
   }
@@ -115,7 +117,23 @@ export default class ClustersContainer extends Component {
     const service = this.findService(clusterName, serviceName);
     if (!service) return null;
     // TODO: if no matching service is found, show an error
-    return <Service service={service} />
+    const cluster = this.findCluster(clusterName);
+    return <Service service={service} cluster={cluster} />
+  }
+
+  /**
+   * Render the service sheet.
+   */
+
+  renderContainerInstanceSheet() {
+    const clusterName = this.props.params.clusterName;
+    const instanceArn = this.props.params.instanceArn;
+    if (!instanceArn) return null;
+    const containerInstance = this.findContainerInstance(clusterName, instanceArn);
+    if (!containerInstance) return null;
+    // TODO: if no matching container instance is found, show an error
+    const cluster = this.findCluster(clusterName);
+    return <ContainerInstance containerInstance={containerInstance} cluster={cluster} />
   }
 
   /**
@@ -165,8 +183,10 @@ export default class ClustersContainer extends Component {
     }
 
     return this.state.containerInstances.find((ci) => {
-      return ci.clusterArn === cluster.clusterArn &&
-        ci.containerInstanceArn === containerInstanceArn;
+      return ci.clusterArn === cluster.clusterArn && (
+          ci.containerInstanceArn === containerInstanceArn ||
+          ci.containerInstanceArn.endsWith(`:container-instance/${containerInstanceArn}`) 
+        );
     });
   }
 

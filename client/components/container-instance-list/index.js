@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import classname from 'classname';
 import moment from 'moment';
+import { Link } from 'react-router';
 import styles from './index.css';
 import ContainerInstanceStats from '../container-instance-stats';
 
@@ -26,12 +27,13 @@ export default class ContainerInstanceList extends Component {
   renderContainerItem(container, n) {
     const clusterName = container.clusterArn.split('cluster/')[1];
     const instanceId = container.ec2InstanceId;
+    const instanceArnId = container.containerInstanceArn.split('/')[1];
     return (
       <li key={n + container.containerInstanceArn} className={styles.ContainerListItem}>
-        <div>
+        <Link to={`/${clusterName}/container-instance/${instanceArnId}`}>
           <h3>{container.ec2InstanceId}</h3>
           <ContainerInstanceStats containerInstance={container} />
-        </div>
+        </Link>
       </li>
     );
   }
