@@ -213,3 +213,38 @@ ECS.prototype.taskDef = function (task){
     });
   });
 }
+
+/**
+ * List tasks then describe by cluster
+ *
+ * @public
+ * @param {String} cluster the cluster name or arn
+ */
+
+ECS.prototype.tasksByCluster = function (cluster){
+  return new Promise((resolve, reject) => {
+    let req = { cluster };
+    this.ecs.listTasks(req, (err, res) => {
+      if (err) return reject(err);
+      resolve(this.tasks(cluster, res.taskArns));
+    });
+  });
+}
+
+/**
+ * Describe cluster tasks
+ *
+ * @private
+ * @param {String} cluster the cluster name or arn
+ * @param {Array} tasks list of task arns
+ */
+
+ECS.prototype.tasks = function (cluster, tasks){
+  return new Promise((resolve, reject) => {
+    let req = { tasks, cluster };
+    this.ecs.describeTasks(req, (err, res) => {
+      if (err) return reject(err);
+      resolve(res);
+    })
+  });
+}

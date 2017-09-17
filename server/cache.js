@@ -96,7 +96,18 @@ Cache.prototype.poll = function *(){
   let taskDefs = yield Promise.all(taskDefCalls);
   services.forEach((service, i) => service.taskDef = taskDefs[i].taskDefinition);
   debug('received %d tasks', services.length);
-  this.cache(clusters, services, containerInstances);
+
+  // for all clusters, get the tasks running
+  let taskCalls = clusters.map(cluster => {
+    return ecs.tasksByCluster(cluster.clusterArn)
+      .then((tasks) => {
+        cluster.tasks = tasks.tasks;
+        return tasks.tasks;
+      });
+  });
+  let tasks = yield Promise.all(taskCalls);
+  console.log(tasks);
+  this.cache(clusters, services, containerInstances, tasks);
 };
 
 /**
