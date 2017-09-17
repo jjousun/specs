@@ -101,8 +101,8 @@ Cache.prototype.poll = function *(){
   let taskCalls = clusters.map(cluster => {
     return ecs.tasksByCluster(cluster.clusterArn)
       .then((tasks) => {
-        cluster.tasks = tasks.tasks;
-        return tasks.tasks;
+        cluster.tasks = tasks;
+        return tasks;
       });
   });
   let tasks = yield Promise.all(taskCalls);

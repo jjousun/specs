@@ -120,6 +120,10 @@ ECS.prototype.listContainerInstances = function(cluster) {
 
 
 ECS.prototype.describeContainerInstances = function([cluster, containerInstances]) {
+  if (!containerInstances || containerInstances.length === 0) {
+    Promise.resolve([]);
+  }
+
   let ecs = this.ecs;
   debug('ecs.listContainerInstances()'); 
   return new Promise((resolve, reject) => {
@@ -240,11 +244,15 @@ ECS.prototype.tasksByCluster = function (cluster){
  */
 
 ECS.prototype.tasks = function (cluster, tasks){
+  if (!tasks || tasks.length === 0) {
+    Promise.resolve([]);
+  }
+
   return new Promise((resolve, reject) => {
     let req = { tasks, cluster };
     this.ecs.describeTasks(req, (err, res) => {
       if (err) return reject(err);
-      resolve(res);
+      resolve(res.tasks);
     })
   });
 }
