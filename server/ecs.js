@@ -121,7 +121,7 @@ ECS.prototype.listContainerInstances = function(cluster) {
 
 ECS.prototype.describeContainerInstances = function([cluster, containerInstances]) {
   if (!containerInstances || containerInstances.length === 0) {
-    Promise.resolve([]);
+    return Promise.resolve([]);
   }
 
   let ecs = this.ecs;
@@ -245,7 +245,7 @@ ECS.prototype.tasksByCluster = function (cluster){
 
 ECS.prototype.tasks = function (cluster, tasks){
   if (!tasks || tasks.length === 0) {
-    Promise.resolve([]);
+    return Promise.resolve([]);
   }
 
   return new Promise((resolve, reject) => {
