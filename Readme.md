@@ -1,5 +1,5 @@
-
-# Specs
+>This was a project, forked from [segmentio/specs](https://github.com/segmentio/specs), that I did for Curalate to use internally: a better AWS dashboard. Done by exposing more information about container instances via a new EC2 API call, creating an link to the admin panel for each task, and improving UI by creating a toggle for grid/list view. 
+PR for this found [here](https://github.com/curalate/specs/pull/1)
 
 Specs is a high level dashboard for viewing your [ECS][ecs] clusters. For a more complete description, [see the blog post][blog].
 
